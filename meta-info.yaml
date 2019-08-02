@@ -9,9 +9,10 @@ runtime_vars:
 host_requirements:
   firewall:
     - ports: 9619
-        protocol: tcp
-        action: accept
-        ipv6: true
+      protocol: tcp
+      action: accept
+      ipv6: true
+
   cvmfs: false
   host_certificates: true
 
