@@ -1,8 +1,11 @@
 import argparse
 import yaml
+import os
+print(os.getcwd())
+import sys
+print(sys.path)
+from categories.site_security_59 import SiteSecurity59
 
-from models.config_file import ConfigFile
-from categories.site_security_59 import SiteSecurityCategories
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -23,10 +26,9 @@ if __name__ == "__main__":
     augmented_site_level_config_file = args['augmented_site_level_config_file']
     output_dir = args['output_dir']
 
-    augmented_site_level_config = yaml.safe_load(open(augmented_site_level_config_file,'r'))
+    augmented_site_level_config = yaml.safe_load(open(augmented_site_level_config_file, 'r'))
 
-    site_security_59 = ConfigFile("{output_dir}/59_site_security.conf".format(output_dir=output_dir), augmented_site_level_config)
-    site_security_59.add_categories(SiteSecurityCategories("site_security_59", augmented_site_level_config, execution_id).get_categories())
+    site_security_59 = SiteSecurity59("{output_dir}/59_site_security.conf".format(output_dir=output_dir), augmented_site_level_config, execution_id)
     site_security_59.generate_output_file()
 
     # condor_mapfile = ConfigFile("{output_dir}/condor_mapfile".format(output_dir=output_dir), augmented_site_level_config)

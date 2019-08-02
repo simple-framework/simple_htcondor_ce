@@ -4,7 +4,7 @@ import yaql
 class ParameterCategory:
 
     def __init__(self, name, data=None):
-        self.engine = yaql.factory.YaqlFactory().create()
+        self.engine = yaql.language.factory.YaqlFactory().create()
         self.name = name
         self.data = data
         self.evaluated_object = {}
