@@ -1,0 +1,27 @@
+component: "HTCondor-CE"
+type: "compute_element"
+version: 8.8
+site_level_config_version: 1.0
+default_var_prefix: htcondor_ce_default_var
+runtime_vars:
+  - htcondor_ce_runtime_var_ce_host
+
+host_requirements:
+  firewall:
+    - ports: 9619
+        protocol: tcp
+        action: accept
+        ipv6: true
+  cvmfs: false
+  host_certificates: true
+
+level_2_configurators:
+  sh:
+    docker_run_parameters:
+      privileged: true
+      hostname: *htcondor_ce_runtime_var_ce_host
+      ports:
+        - "9619:9619"
+      tty: true
+      interactive: true
+      detached: true

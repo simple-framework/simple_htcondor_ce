@@ -1,0 +1,2 @@
+expected-from-site-level-config:
+  uid_domain: {type: str(), required: true, use_default: true}

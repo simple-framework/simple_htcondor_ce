@@ -7,7 +7,7 @@ RUN rpm --import RPM-GPG-KEY-HTCondor
 WORKDIR /etc/yum.repos.d/
 RUN wget https://research.cs.wisc.edu/htcondor/yum/repo.d/htcondor-stable-rhel7.repo
 RUN yum -y install condor htcondor-ce-condor 
-COPY sh/config/batch7-stable.repo /etc/yum.repos.d/batch7-stable.repo
+#COPY config/batch7-stable.repo /etc/yum.repos.d/batch7-stable.repo
 
 ## Install certs ##
 RUN yum -y install fetch-crl globus-rsl empty-ca-certs

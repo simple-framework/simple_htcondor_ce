@@ -1,0 +1,2 @@
+htcondor-ce-expected-from-site-level-config:
+  htcondor_ce_default_var_uid_domain: &htcondor_ce_default_var_uid_domain "cern.ch"
