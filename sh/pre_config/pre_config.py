@@ -1,9 +1,8 @@
 import argparse
 import yaml
 
-from sh.pre_config.models.config_file import ConfigFile
-import sh.pre_config.categories.condor_mapfile as condor_mapfile_categories
-
+from models.config_file import ConfigFile
+import categories.site_security_59 as site_security_59_categories
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -24,8 +23,12 @@ if __name__ == "__main__":
     augmented_site_level_config_file = args['augmented_site_level_config_file']
     output_dir = args['output_dir']
 
-    augmented_site_level_config = yaml.safe_load(augmented_site_level_config_file)
+    augmented_site_level_config = yaml.safe_load(open(augmented_site_level_config_file,'r'))
 
-    condor_mapfile = ConfigFile("{output_dir}/condor_mapfile".format(output_dir=output_dir), augmented_site_level_config)
-    condor_mapfile.add_categories(condor_mapfile_categories.get(augmented_site_level_config, execution_id))
-    condor_mapfile.generate_output_file()
+    site_security_59 = ConfigFile("{output_dir}/59_site_security.conf".format(output_dir=output_dir), augmented_site_level_config)
+    site_security_59.add_category(site_security_59_categories.get_categories(augmented_site_level_config, execution_id))
+    site_security_59.generate_output_file()
+
+    # condor_mapfile = ConfigFile("{output_dir}/condor_mapfile".format(output_dir=output_dir), augmented_site_level_config)
+    # condor_mapfile.add_categories(condor_mapfile_categories.get(augmented_site_level_config, execution_id))
+    # condor_mapfile.generate_output_file()

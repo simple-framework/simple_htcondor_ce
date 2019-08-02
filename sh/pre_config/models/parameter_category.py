@@ -14,7 +14,7 @@ class ParameterCategory:
     def get(self):
         self.evaluate_all_queries()
         for key in self.evaluated_object:
-            string_value = self.generate_yaim_output(key, self.evaluated_object[key])
+            string_value = self.generate_condor_output(key, self.evaluated_object[key])
             self.evaluated_array.append(string_value)
         return self.evaluated_array
 
@@ -26,6 +26,10 @@ class ParameterCategory:
 
     def add(self, value):
         self.evaluated_array.append(value)
+
+    def generate_condor_output(self, key, value):
+        condor_knob = "{key} = {value}".format(key=key.upper(), value=value)
+        return condor_knob
 
     def generate_yaim_output(self, key, value):
         env_variable = key.upper() + "=\"" + str(value) + "\"\n"

@@ -10,6 +10,9 @@ class ConfigFile:
         for category in categories:
             self.categories.append(category)
 
+    def add_category(self, category):
+        self.categories.append(category)
+
     def evaluate_categories(self):
         for category in self.categories:
             evaluated_results = category.get()
