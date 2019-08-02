@@ -7,10 +7,10 @@ class SiteSecurity59(ConfigFile):
 
     def add_static_parameters(self):
         super().add_static_parameters()
-
+        self.static_category
     def add_lightweight_component_queried_parameters(self):
         super().add_lightweight_component_queried_parameters()
-        self.lightweight_component_queried.add_key_value_query("uid_domain", "$.config.uid_domain")
+        self.lightweight_component_queried_category.add_key_value_query("uid_domain", "$.config.uid_domain")
 
 
 
