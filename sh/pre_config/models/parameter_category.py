@@ -28,7 +28,7 @@ class ParameterCategory:
         self.evaluated_array.append(value)
 
     def generate_condor_output(self, key, value):
-        condor_knob = "{key} = {value}".format(key=key.upper(), value=value)
+        condor_knob = "{key} = {value}\n".format(key=key.upper(), value=value)
         return condor_knob
 
     def generate_yaim_output(self, key, value):
