@@ -1,2 +1,4 @@
 htcondor-ce-expected-from-site-level-config:
   htcondor_ce_default_var_uid_domain: &htcondor_ce_default_var_uid_domain "cern.ch"
+  htcondor_ce_default_var_gss_assist_gridmap_cache_expiration: &htcondor_ce_default_var_gss_assist_gridmap_cache_expiration 7200
+  htcondor_ce_default_var_per_job_history_dir: &htcondor_ce_default_var_per_job_history_dir "/var/lib/gratia/condorce_data"
