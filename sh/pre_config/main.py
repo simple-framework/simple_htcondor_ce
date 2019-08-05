@@ -3,6 +3,7 @@ import yaml
 
 from configured_attributes_60 import ConfiguredAttributes60
 from files.site_security_59 import SiteSecurity59
+from simple_98 import Simple98
 
 
 def parse_args():
@@ -38,7 +39,10 @@ if __name__ == "__main__":
                                                       .format(output_dir=output_dir), augmented_site_level_config,
                                                       execution_id)
     configured_attributes_60.generate_output_file()
-    
+
+    simple_98 = Simple98("{output_dir}/98_simple.conf".format(output_dir=output_dir),
+                         augmented_site_level_config, execution_id)
+    simple_98.generate_output_file()
     # condor_mapfile = ConfigFile("{output_dir}/condor_mapfile".format(output_dir=output_dir), augmented_site_level_config)
     # condor_mapfile.add_categories(condor_mapfile_categories.get(augmented_site_level_config, execution_id))
     # condor_mapfile.generate_output_file()
