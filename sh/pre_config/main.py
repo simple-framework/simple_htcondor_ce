@@ -1,5 +1,7 @@
 import argparse
 import yaml
+
+from configured_attributes_60 import ConfiguredAttributes60
 from files.site_security_59 import SiteSecurity59
 
 
@@ -28,11 +30,14 @@ if __name__ == "__main__":
     # 01-common-auth.conf  02-ce-condor.conf  03-ce-shared-port.conf  03-managed-fork.conf
 
     # Custom config files
-    site_security_59 = SiteSecurity59("{output_dir}/59_site_security.conf".format(output_dir=output_dir), augmented_site_level_config, execution_id)
+    site_security_59 = SiteSecurity59("{output_dir}/59_site_security.conf".format(output_dir=output_dir),
+                                      augmented_site_level_config, execution_id)
     site_security_59.generate_output_file()
 
-    configured_attributes_60 = ConfiguredAttributes60("{output_dir}/60_configured_attributes.conf".format(output_dir=output_dir), augmented_site_level_config, execution_id)
-
+    configured_attributes_60 = ConfiguredAttributes60("{output_dir}/60_configured_attributes.conf"
+                                                      .format(output_dir=output_dir), augmented_site_level_config,
+                                                      execution_id)
+    configured_attributes_60.generate_output_file()
     
     # condor_mapfile = ConfigFile("{output_dir}/condor_mapfile".format(output_dir=output_dir), augmented_site_level_config)
     # condor_mapfile.add_categories(condor_mapfile_categories.get(augmented_site_level_config, execution_id))
