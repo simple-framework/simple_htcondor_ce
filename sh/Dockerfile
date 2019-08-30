@@ -27,8 +27,8 @@ RUN yum install -y puppet-agent
 RUN /opt/puppetlabs/bin/puppet module install puppet-fetchcrl --version 3.0.0
 RUN /opt/puppetlabs/bin/puppet module install HEPPuppet-argus --version 0.0.3
 RUN /opt/puppetlabs/bin/puppet module install HEPPuppet-htcondor --version 2.4.3
-RUN git clone https://github.com/HEP-Puppet/puppet-localfolder
-RUN git clone https://github.com/HEP-Puppet/puppet-grid_accounts/tree/master/manifests
+RUN git clone https://github.com/HEP-Puppet/puppet-localfolder /tmp/puppet-localfolder
+RUN git clone https://github.com/HEP-Puppet/puppet-grid_accounts /tmp/puppet-grid_accounts
 
 
 ## mount point for SIMPLE Grid Framework ##
