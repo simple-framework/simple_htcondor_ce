@@ -24,8 +24,8 @@ RUN adduser -m condor_user
 RUN mkdir -p /etc/grid-security/
 RUN rpm -Uvh http://yum.puppet.com/puppet5-release-el-7.noarch.rpm
 RUN yum install -y puppet-agent
-RUN puppet module install HEPPuppet-argus --version 0.0.3
-RUN puppet module install HEPPuppet-htcondor --version 2.4.3
+RUN /opt/puppetlabs/bin/puppet module install HEPPuppet-argus --version 0.0.3
+RUN /opt/puppetlabs/bin/puppet module install HEPPuppet-htcondor --version 2.4.3
 
 
 ## mount point for SIMPLE Grid Framework ##
