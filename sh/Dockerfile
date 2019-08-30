@@ -16,7 +16,7 @@ RUN yum -y install fetch-crl globus-rsl empty-ca-certs
 RUN yum install -y vim less 
 
 ## net tools ##
-RUN yum install -y net-tools iproute openssh openssh-server openssh-clients openssl-libs tcpdump
+RUN yum install -y net-tools iproute openssh openssh-server openssh-clients openssl-libs tcpdump git
 
 ## default users ##
 RUN useradd -m test
@@ -24,8 +24,11 @@ RUN adduser -m condor_user
 RUN mkdir -p /etc/grid-security/
 RUN rpm -Uvh http://yum.puppet.com/puppet5-release-el-7.noarch.rpm
 RUN yum install -y puppet-agent
+RUN /opt/puppetlabs/bin/puppet module install puppet-fetchcrl --version 3.0.0
 RUN /opt/puppetlabs/bin/puppet module install HEPPuppet-argus --version 0.0.3
 RUN /opt/puppetlabs/bin/puppet module install HEPPuppet-htcondor --version 2.4.3
+RUN git clone https://github.com/HEP-Puppet/puppet-localfolder
+RUN git clone https://github.com/HEP-Puppet/puppet-grid_accounts/tree/master/manifests
 
 
 ## mount point for SIMPLE Grid Framework ##
