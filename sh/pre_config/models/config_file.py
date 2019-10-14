@@ -9,7 +9,13 @@ class ConfigFile:
         self.output_file = output_file
         self.augmented_site_level_config = augmented_site_level_config
         self.lightweight_component = get_lightweight_component(augmented_site_level_config, execution_id)
-
+        self.dns = None
+        for dns_info in augmented_site_level_config['dns']:
+            if dns_info['execution_id'] == int(execution_id):
+                self.dns = dns_info
+                break
+        if self.dns is None:
+            raise Exception("Cannot find DNS entry for current HTCondor-CE lightweight component")
         self.lightweight_component_queried_category = ParameterCategory("{name}_lightweight_component_queried".format(name=output_file),
                                                                         self.lightweight_component)
         self.global_queried_category = ParameterCategory("{name}_global_queried".format(name=output_file), augmented_site_level_config)
