@@ -1,9 +1,9 @@
 import argparse
 import yaml
 
-from configured_attributes_60 import ConfiguredAttributes60
+from files.configured_attributes_60 import ConfiguredAttributes60
 from files.site_security_59 import SiteSecurity59
-from simple_98 import Simple98
+from files.simple_98 import Simple98
 
 
 def parse_args():
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     # Files present in container by default at /etc/condor-ce/config.d/: 01-ce-auth.conf  01-ce-router.conf
     # 01-common-auth.conf  02-ce-condor.conf  03-ce-shared-port.conf  03-managed-fork.conf
 
-    # Custom config files
+    # Custom config files /etc/condor-ce
     site_security_59 = SiteSecurity59("{output_dir}/59_site_security.conf".format(output_dir=output_dir),
                                       augmented_site_level_config, execution_id)
     site_security_59.generate_output_file()
@@ -43,6 +43,10 @@ if __name__ == "__main__":
     simple_98 = Simple98("{output_dir}/98_simple.conf".format(output_dir=output_dir),
                          augmented_site_level_config, execution_id)
     simple_98.generate_output_file()
+
+
     # condor_mapfile = ConfigFile("{output_dir}/condor_mapfile".format(output_dir=output_dir), augmented_site_level_config)
     # condor_mapfile.add_categories(condor_mapfile_categories.get(augmented_site_level_config, execution_id))
     # condor_mapfile.generate_output_file()
+
+    # Custom config files /etc/condor
