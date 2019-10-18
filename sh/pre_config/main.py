@@ -6,6 +6,7 @@ from files.site_security_59 import SiteSecurity59
 from files.simple_98 import Simple98
 from files.condor_mapfile import CondorMapfile
 from files.pc_config_50 import PCConfig50
+from files.simple_condor_98 import SimpleCondor98
 
 
 def parse_args():
@@ -54,3 +55,7 @@ if __name__ == "__main__":
     pc_config_50 = PCConfig50("{output_dir}/50PC.config".format(output_dir=output_dir),
                               augmented_site_level_config, execution_id)
     pc_config_50.generate_output_file()
+
+    simple_condor_98 = SimpleCondor98("{output_dir}/98_simple_condor.conf".format(output_dir=output_dir),
+                                      augmented_site_level_config, execution_id)
+    simple_condor_98.generate_output_file()
