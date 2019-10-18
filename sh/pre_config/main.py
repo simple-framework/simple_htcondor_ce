@@ -5,6 +5,7 @@ from files.configured_attributes_60 import ConfiguredAttributes60
 from files.site_security_59 import SiteSecurity59
 from files.simple_98 import Simple98
 from files.condor_mapfile import CondorMapfile
+from files.pc_config_50 import PCConfig50
 
 
 def parse_args():
@@ -48,8 +49,8 @@ if __name__ == "__main__":
     condor_mapfile = CondorMapfile("{output_dir}/condor_mapfile".format(output_dir=output_dir),
                                    augmented_site_level_config, execution_id)
     condor_mapfile.generate_output_file()
-    # condor_mapfile = ConfigFile("{output_dir}/condor_mapfile".format(output_dir=output_dir), augmented_site_level_config)
-    # condor_mapfile.add_categories(condor_mapfile_categories.get(augmented_site_level_config, execution_id))
-    # condor_mapfile.generate_output_file()
 
     # Custom config files /etc/condor
+    pc_config_50 = PCConfig50("{output_dir}/50PC.config".format(output_dir=output_dir),
+                              augmented_site_level_config, execution_id)
+    pc_config_50.generate_output_file()
