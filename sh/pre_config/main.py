@@ -52,7 +52,7 @@ if __name__ == "__main__":
     condor_mapfile.generate_output_file()
 
     # Custom config files /etc/condor
-    pc_config_50 = PCConfig50("{output_dir}/50PC.config".format(output_dir=output_dir),
+    pc_config_50 = PCConfig50("{output_dir}/50_PC.conf".format(output_dir=output_dir),
                               augmented_site_level_config, execution_id)
     pc_config_50.generate_output_file()
 
