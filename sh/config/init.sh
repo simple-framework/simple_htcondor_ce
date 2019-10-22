@@ -26,9 +26,16 @@ echo "Initializing HTCondor SCHEDD"
 echo "----------------------------------"
 cp $SIMPLE_CONFIG_DIR/config/50_PC.conf $HTCONDOR_CONFIG_DIR/config.d/50PC.conf
 cp $SIMPLE_CONFIG_DIR/config/98_simple_condor.conf $HTCONDOR_CONFIG_DIR/config.d/98_simple_condor.conf
+
+
+echo "----------------------------------"
+echo "Starting daemons"
+echo "----------------------------------"
 echo "Starting HTCondorCE"
 systemctl start condor-ce
 echo "Starting HTCondor"
 systemctl start condor
-echo "Initialization Complete!"
+echo "Starting crond"
+systemctl start crond
 
+echo "Initialization Complete!"
