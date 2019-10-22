@@ -1,3 +1,4 @@
+from generic_helpers import get_batch_dns_info
 from models.config_file import ConfigFile
 
 
@@ -19,7 +20,7 @@ class ConfiguredAttributes60(ConfigFile):
 
     def add_advanced_parameters(self):
         super().add_advanced_parameters()
-        dns = self.get_batch_dns_info()
+        dns = get_batch_dns_info(self.augmented_site_level_config)
         fqdn = dns['container_fqdn']
         internal_ip = dns['container_ip']
         self.advanced_category.add_key_value("JOB_ROUTER_SCHEDD2_NAME", fqdn)

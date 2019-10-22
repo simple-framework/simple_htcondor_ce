@@ -1,4 +1,5 @@
 from config_file import ConfigFile
+from generic_helpers import get_batch_dns_info
 
 
 class PCConfig50(ConfigFile):
@@ -7,7 +8,7 @@ class PCConfig50(ConfigFile):
 
     def add_advanced_parameters(self):
         super().add_advanced_parameters()
-        batch_dns = self.get_batch_dns_info()
+        batch_dns = get_batch_dns_info(self.augmented_site_level_config)
         batch_ip = batch_dns['container_ip']
         allow_write = '.'.join((batch_ip.split('.')[0:-2] + ['*', '*']))
         self.advanced_category.add("Use ROLE: submit\n")
