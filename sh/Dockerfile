@@ -20,7 +20,7 @@ RUN yum -y install fetch-crl globus-rsl empty-ca-certs
 RUN yum install -y vim less 
 
 ## net tools ##
-RUN yum install -y net-tools iproute openssh openssh-server openssh-clients openssl-libs tcpdump
+RUN yum install -y net-tools iproute openssh openssh-server openssh-clients openssl-libs tcpdump telnet
 
 ## default users ##
 RUN useradd -m simple
