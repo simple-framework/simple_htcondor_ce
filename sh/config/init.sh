@@ -9,7 +9,18 @@ cp $SIMPLE_CONFIG_DIR/config/98_simple.conf $HTCONDOR_CE_CONFIG_DIR/config.d/98_
 cp $SIMPLE_CONFIG_DIR/config/59_site_security.conf $HTCONDOR_CE_CONFIG_DIR/config.d/59_site_security.conf
 echo "Copied HTCondorCE config files from $SIMPLE_CONFIG_DIR/config to $HTCONDORCE_CONFIG_DIR/config.d. Copied condor_mapfile to $HTCONDORCE_CONFIG_DIR"
 # Copy host certificates and set permissions
-# Create users
+echo "Copying host certificates..."
+cp /etc/simple_grid/host_certificates/hostcert.pem /etc/grid-security/
+cp /etc/simple_grid/host_certificates/hostkey.pem /etc/grid-security/
+
+#set permissions
+echo "Setting permissions for host certificates..."
+chmod 600 /etc/grid-security/hostkey.pem
+chmod 644 /etc/grid-security/hostcert.pem
+echo "Done"
+
+# Create users dynamically
+# TODO
 echo "----------------------------------"
 echo "Initializing HTCondor SCHEDD"
 echo "----------------------------------"
