@@ -7,8 +7,7 @@ class CondorMapfile(ConfigFile):
 
     def add_static_parameters(self):
         super().add_static_parameters()
-        self.static_category.add("GSI \"(/CN=[-.A-Za-z0-9/= ]+\" \\1@unmapped.htcondor.org\n"
-                                 "GSI (.*) simple\n"
+        self.static_category.add("GSI (.*) simple\n"
                                  "CLAIMTOBE .* anonymous@claimtobe\n"
                                  "FS (.*) \\1"
                                  )
