@@ -1,4 +1,5 @@
 FROM cern/cc7-base
+MAINTAINER Mayank Sharma (mayank.sharma@cern.ch)
 
 ENV SIMPLE_CONFIG_DIR=/etc/simple_grid
 ENV HTCONDOR_CE_CONFIG_DIR=/etc/condor-ce
@@ -10,8 +11,7 @@ RUN wget https://research.cs.wisc.edu/htcondor/yum/RPM-GPG-KEY-HTCondor
 RUN rpm --import RPM-GPG-KEY-HTCondor
 WORKDIR /etc/yum.repos.d
 RUN wget https://research.cs.wisc.edu/htcondor/yum/repo.d/htcondor-stable-rhel7.repo
-RUN yum -y install condor htcondor-ce-condor 
-#COPY config/batch7-stable.repo /etc/yum.repos.d/batch7-stable.repo
+RUN yum -y install condor htcondor-ce-condor
 
 ## Install certs ##
 RUN yum -y install fetch-crl globus-rsl empty-ca-certs
@@ -25,6 +25,7 @@ RUN yum install -y net-tools iproute openssh openssh-server openssh-clients open
 ## default users ##
 RUN useradd -m simple
 RUN adduser -m condor_user
+
 RUN mkdir -p /etc/grid-security/
 RUN rpm -Uvh http://yum.puppet.com/puppet5-release-el-7.noarch.rpm
 RUN yum install -y puppet-agent
