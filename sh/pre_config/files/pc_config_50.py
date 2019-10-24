@@ -1,5 +1,5 @@
 from config_file import ConfigFile
-from generic_helpers import get_dns_info, get_lightweight_component
+from generic_helpers import get_dns_info
 
 
 class PCConfig50(ConfigFile):
@@ -13,5 +13,5 @@ class PCConfig50(ConfigFile):
         batch_ip = batch_dns['container_ip']
         allow_write = '.'.join((batch_ip.split('.')[0:-2] + ['*']))
         self.advanced_category.add("Use ROLE: submit\n")
-        self.advanced_category.add_key_value("CONDOR_HOST", batch_ip)
-        self.advanced_category.add_key_value("ALLOW_WRITE", allow_write)
+        self.advanced_category.add_key_value("condor_host", batch_ip)
+        self.advanced_category.add_key_value("allow_write", allow_write)
