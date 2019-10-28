@@ -37,5 +37,7 @@ echo "Starting HTCondor"
 systemctl start condor
 echo "Starting crond"
 systemctl start crond
-
+echo "Fetch CRL config"
+systemctl start fetch-crl-cron
+fetch-crl
 echo "Initialization Complete!"

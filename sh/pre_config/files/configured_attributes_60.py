@@ -21,9 +21,10 @@ class ConfiguredAttributes60(ConfigFile):
     def add_advanced_parameters(self):
         super().add_advanced_parameters()
         batch_execution_id  = self.lightweight_component['config']['condor_host_execution_id']
-        dns = get_dns_info(self.augmented_site_level_config, batch_execution_id)
+        batch_dns = get_dns_info(self.augmented_site_level_config, batch_execution_id)
+        dns = get_dns_info(self.augmented_site_level_config, self.lightweight_component['execution_id'])
         fqdn = dns['container_fqdn']
-        internal_ip = dns['container_ip']
+        internal_ip = batch_dns['container_ip']
         self.advanced_category.add_key_value("JOB_ROUTER_SCHEDD2_NAME", fqdn)
         self.advanced_category.add_key_value("JOB_ROUTER_SCHEDD2_POOL", "{internal_ip}:9618".format(
                                                                                 internal_ip=internal_ip

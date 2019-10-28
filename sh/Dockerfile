@@ -13,8 +13,13 @@ WORKDIR /etc/yum.repos.d
 RUN wget https://research.cs.wisc.edu/htcondor/yum/repo.d/htcondor-stable-rhel7.repo
 RUN yum -y install condor htcondor-ce-condor
 
-## Install certs ##
-RUN yum -y install fetch-crl globus-rsl empty-ca-certs
+## Install certs, CRLs ##
+RUN wget -O /etc/yum.repos.d/EGI-third-party.repo \
+	http://repository.egi.eu/community/software/third.party.distribution/1.0/releases/repofiles/sl-6-x86_64.repo
+RUN echo -e 'protect=1\npriority=1' >> /etc/yum.repos.d/EGI-third-party.repo
+RUN yum -y install \
+    http://repository.egi.eu/sw/production/umd/4/sl6/x86_64/updates/umd-release-4.1.3-1.el6.noarch.rpm
+RUN yum -y --skip-broken install fetch-crl globus-rsl empty-ca-certs ca-policy-egi-core
 
 ## Install utils ##
 RUN yum install -y vim less 
