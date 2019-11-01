@@ -20,7 +20,16 @@ chmod 644 /etc/grid-security/hostcert.pem
 echo "Done"
 
 # Create users dynamically
-# TODO
+while IFS=" = " read -r key value; do
+	case "$key" in
+		SUPPORTED_VO_USERS)
+    for user in ${value//,/ }
+    do
+	    adduser -m $user
+    done ;;
+	esac
+  done < $SIMPLE_CONFIG_DIR/config/supported_vo_users.conf
+
 echo "----------------------------------"
 echo "Initializing HTCondor SCHEDD"
 echo "----------------------------------"

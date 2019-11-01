@@ -7,6 +7,7 @@ from files.simple_98 import Simple98
 from files.condor_mapfile import CondorMapfile
 from files.pc_config_50 import PCConfig50
 from files.simple_condor_98 import SimpleCondor98
+from files.supported_vo_users import SupportedVOUsers
 
 
 def parse_args():
@@ -59,3 +60,7 @@ if __name__ == "__main__":
     simple_condor_98 = SimpleCondor98("{output_dir}/98_simple_condor.conf".format(output_dir=output_dir),
                                       augmented_site_level_config, execution_id)
     simple_condor_98.generate_output_file()
+
+    supported_vo_users = SupportedVOUsers("{output_dir}/supported_vo_users.conf".format(output_dir=output_dir),
+                                          augmented_site_level_config, execution_id)
+    supported_vo_users.generate_output_file()
