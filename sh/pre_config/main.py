@@ -8,6 +8,7 @@ from files.condor_mapfile import CondorMapfile
 from files.pc_config_50 import PCConfig50
 from files.simple_condor_98 import SimpleCondor98
 from files.supported_vo_users import SupportedVOUsers
+from files.supplemental_config import SupplementalConfig
 
 
 def parse_args():
@@ -64,3 +65,8 @@ if __name__ == "__main__":
     supported_vo_users = SupportedVOUsers("{output_dir}/supported_vo_users.conf".format(output_dir=output_dir),
                                           augmented_site_level_config, execution_id)
     supported_vo_users.generate_output_file()
+
+    for lc in augmented_site_level_config['lightweight_components']:
+        if 'supplemental_config' in lc:
+            supplemental_config = SupplementalConfig(output_dir, augmented_site_level_config, lc['execution_id'])
+            supplemental_config.generate_output_file()
