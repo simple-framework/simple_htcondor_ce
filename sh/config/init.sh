@@ -7,13 +7,11 @@ cp $SIMPLE_CONFIG_DIR/config/condor_mapfile $HTCONDOR_CE_CONFIG_DIR/condor_mapfi
 cp $SIMPLE_CONFIG_DIR/config/60_configured_attributes.conf $HTCONDOR_CE_CONFIG_DIR/config.d/60_configured_attributes.conf
 cp $SIMPLE_CONFIG_DIR/config/98_simple.conf $HTCONDOR_CE_CONFIG_DIR/config.d/98_simple.conf
 cp $SIMPLE_CONFIG_DIR/config/59_site_security.conf $HTCONDOR_CE_CONFIG_DIR/config.d/59_site_security.conf
-SUPPLEMENT_CONF_FILES=$SIMPLE_CONFIG_DIR/config/99-problems*
-for f in $SUPPLEMENT_CONF_FILES
-do
-  FILENAME=$(basename $f .conf)
-  COMPONENT=${FILENAME##99-problems-}
-  mkdir -p /etc/$COMPONENT/config.d && cp $f $_/99-problems.conf
-done
+
+echo "Copying supplemental configs..."
+while IFS=":" read -r source dest; do
+  mkdir -p $(dirname ${dest}) && cp $SIMPLE_CONFIG_DIR/config/$source ${dest}
+done < ${SIMPLE_CONFIG_DIR}/config/supplemental_mapfile
 
 # Copy host certificates and set permissions
 echo "Copying host certificates..."

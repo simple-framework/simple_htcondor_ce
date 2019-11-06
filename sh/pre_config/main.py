@@ -1,3 +1,4 @@
+import os
 import argparse
 import yaml
 
@@ -9,6 +10,8 @@ from files.pc_config_50 import PCConfig50
 from files.simple_condor_98 import SimpleCondor98
 from files.supported_vo_users import SupportedVOUsers
 from files.supplemental_config import SupplementalConfig
+
+from helpers.generic_helpers import get_lightweight_component
 
 
 def parse_args():
@@ -66,7 +69,11 @@ if __name__ == "__main__":
                                           augmented_site_level_config, execution_id)
     supported_vo_users.generate_output_file()
 
-    for lc in augmented_site_level_config['lightweight_components']:
-        if 'supplemental_config' in lc:
-            supplemental_config = SupplementalConfig(output_dir, augmented_site_level_config, lc['execution_id'])
-            supplemental_config.generate_output_file()
+    lc = get_lightweight_component(augmented_site_level_config, execution_id)
+
+    if os.path.exists('{output_dir}/supplemental_mapfile'.format(output_dir=output_dir)):
+        os.remove('{output_dir}/supplemental_mapfile'.format(output_dir=output_dir))
+
+    for component in lc.get('supplemental_config'):
+        supplemental_config = SupplementalConfig(output_dir, augmented_site_level_config, execution_id, component)
+        supplemental_config.generate_output_file()
