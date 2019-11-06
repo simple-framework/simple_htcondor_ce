@@ -1,6 +1,7 @@
 from helpers.generic_helpers import get_lightweight_component
 from models.config_file import ConfigFile
 
+
 class SupplementalConfig(ConfigFile):
     def __init__(self, output_dir, augmented_site_level_config, execution_id, component):
         self.component_props = get_lightweight_component(augmented_site_level_config, execution_id)['supplemental_config'][component]

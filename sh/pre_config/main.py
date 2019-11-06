@@ -74,6 +74,6 @@ if __name__ == "__main__":
     if os.path.exists('{output_dir}/supplemental_mapfile'.format(output_dir=output_dir)):
         os.remove('{output_dir}/supplemental_mapfile'.format(output_dir=output_dir))
 
-    for component in lc.get('supplemental_config'):
+    for component in lc.get('supplemental_config', []):
         supplemental_config = SupplementalConfig(output_dir, augmented_site_level_config, execution_id, component)
         supplemental_config.generate_output_file()
