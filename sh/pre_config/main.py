@@ -10,6 +10,7 @@ from files.pc_config_50 import PCConfig50
 from files.simple_condor_98 import SimpleCondor98
 from files.supported_vo_users import SupportedVOUsers
 from files.supplemental_config import SupplementalConfig
+from files.timezone import TimeZone
 
 from helpers.generic_helpers import get_lightweight_component
 
@@ -64,6 +65,9 @@ if __name__ == "__main__":
     simple_condor_98 = SimpleCondor98("{output_dir}/98_simple_condor.conf".format(output_dir=output_dir),
                                       augmented_site_level_config, execution_id)
     simple_condor_98.generate_output_file()
+
+    timezone = TimeZone("{output_dir}/timezone".format(output_dir=output_dir), augmented_site_level_config, execution_id)
+    timezone.generate_output_file()
 
     supported_vo_users = SupportedVOUsers("{output_dir}/supported_vo_users.conf".format(output_dir=output_dir),
                                           augmented_site_level_config, execution_id)

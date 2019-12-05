@@ -36,11 +36,26 @@ while IFS=" = " read -r key value; do
   done < $SIMPLE_CONFIG_DIR/config/supported_vo_users.conf
 
 echo "----------------------------------"
+echo "Set Timezone"
+echo "----------------------------------"
+if [ ! -s $SIMPLE_CONFIG_DIR/config/timezone ]
+then
+    echo "No timezone info available in site_level_config_file."
+else
+    mv /etc/localtime /etc/localtime.backup
+    ln -s /usr/share/zoneinfo/$(cat $SIMPLE_CONFIG_DIR/config/timezone) /etc/localtime
+fi
+
+echo "----------------------------------"
 echo "Initializing HTCondor SCHEDD"
 echo "----------------------------------"
 cp $SIMPLE_CONFIG_DIR/config/50_PC.conf $HTCONDOR_CONFIG_DIR/config.d/50PC.conf
 cp $SIMPLE_CONFIG_DIR/config/98_simple_condor.conf $HTCONDOR_CONFIG_DIR/config.d/98_simple_condor.conf
 
+# fix issue#11 on github. Sometimes permissions on this file are incorrect
+mkdir -p /run/lock/condor-ce
+chown -R condor:condor /var/lock/condor-ce
+chown -R condor:condor /run/lock/condor-ce
 
 echo "----------------------------------"
 echo "Starting daemons"
@@ -52,10 +67,6 @@ systemctl start condor
 echo "Starting crond"
 systemctl start crond
 echo "Fetch CRL config"
-
-# fix issue#11 on github. Sometimes permissions on this file are incorrect
-chown condor /var/lock/condor-ce
-chown condor /run/lock/condor-ce
 
 systemctl start fetch-crl-cron
 fetch-crl
