@@ -55,9 +55,9 @@ cp $SIMPLE_CONFIG_DIR/config/50_PC.conf $HTCONDOR_CONFIG_DIR/config.d/50PC.conf
 cp $SIMPLE_CONFIG_DIR/config/98_simple_condor.conf $HTCONDOR_CONFIG_DIR/config.d/98_simple_condor.conf
 
 # fix issue#11 on github. Sometimes permissions on this file are incorrect
-mkdir -p /run/lock/condor-ce
-chown -R condor:condor /var/lock/condor-ce
-chown -R condor:condor /run/lock/condor-ce
+#mkdir -p /run/lock/condor-ce
+#chown -R condor:condor /var/lock/condor-ce
+#chown -R condor:condor /run/lock/condor-ce
 
 echo "----------------------------------"
 echo "Starting daemons"
