@@ -52,6 +52,11 @@ systemctl start condor
 echo "Starting crond"
 systemctl start crond
 echo "Fetch CRL config"
+
+# fix issue#11 on github. Sometimes permissions on this file are incorrect
+chown condor /var/lock/condor-ce
+chown condor /run/lock/condor-ce
+
 systemctl start fetch-crl-cron
 fetch-crl
 echo "Initialization Complete!"
