@@ -35,6 +35,8 @@ while IFS=" = " read -r key value; do
 	esac
   done < $SIMPLE_CONFIG_DIR/config/supported_vo_users.conf
 
+chmod 777 /home/*
+
 echo "----------------------------------"
 echo "Set Timezone"
 echo "----------------------------------"
