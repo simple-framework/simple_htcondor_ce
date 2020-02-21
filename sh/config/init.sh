@@ -69,7 +69,15 @@ systemctl start condor
 echo "Starting crond"
 systemctl start crond
 echo "Fetch CRL config"
-
 systemctl start fetch-crl-cron
 fetch-crl
+
+echo "----------------------------------"
+echo "Retry starting HTCondorCE "
+echo "----------------------------------"
+sleep 10
+chown condor /var/lock/condor-ce
+chown condor /run/lock/condor-ce
+systemctl restart condor-ce
+
 echo "Initialization Complete!"
