@@ -80,4 +80,12 @@ chown condor /var/lock/condor-ce
 chown condor /run/lock/condor-ce
 systemctl restart condor-ce
 
+echo "----------------------------------"
+echo "Prepare for restarts "
+echo "----------------------------------"
+systenctl enable condor-ce
+systemctl enable condor
+systemctl enable condor
+systemctl enable fetch-crl-cron
+
 echo "Initialization Complete!"
