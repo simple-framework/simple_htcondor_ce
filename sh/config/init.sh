@@ -62,10 +62,10 @@ cp $SIMPLE_CONFIG_DIR/config/98_simple_condor.conf $HTCONDOR_CONFIG_DIR/config.d
 echo "----------------------------------"
 echo "Starting daemons"
 echo "----------------------------------"
-echo "Starting HTCondorCE"
-systemctl start condor-ce
 echo "Starting HTCondor"
 systemctl start condor
+echo "Starting HTCondorCE"
+systemctl start condor-ce
 echo "Starting crond"
 systemctl start crond
 echo "Fetch CRL config"
@@ -76,8 +76,8 @@ echo "----------------------------------"
 echo "Retry starting HTCondorCE "
 echo "----------------------------------"
 sleep 10
-chown condor /var/lock/condor-ce
-chown condor /run/lock/condor-ce
+chown condor:condor /var/lock/condor-ce
+chown condor:condor /run/lock/condor-ce
 systemctl restart condor-ce
 
 echo "----------------------------------"
@@ -85,7 +85,7 @@ echo "Prepare for restarts "
 echo "----------------------------------"
 systemctl enable condor-ce
 systemctl enable condor
-systemctl enable cron
+systemctl enable crond
 systemctl enable fetch-crl-cron
 
 echo "Initialization Complete!"
