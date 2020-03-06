@@ -85,7 +85,7 @@ echo "Prepare for restarts "
 echo "----------------------------------"
 systenctl enable condor-ce
 systemctl enable condor
-systemctl enable condor
+systemctl enable cron
 systemctl enable fetch-crl-cron
 
 echo "Initialization Complete!"
