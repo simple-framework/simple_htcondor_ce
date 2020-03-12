@@ -53,11 +53,7 @@ echo "Initializing HTCondor SCHEDD"
 echo "----------------------------------"
 cp $SIMPLE_CONFIG_DIR/config/50_PC.conf $HTCONDOR_CONFIG_DIR/config.d/50PC.conf
 cp $SIMPLE_CONFIG_DIR/config/98_simple_condor.conf $HTCONDOR_CONFIG_DIR/config.d/98_simple_condor.conf
-
-# fix issue#11 on github. Sometimes permissions on this file are incorrect
-#mkdir -p /run/lock/condor-ce
-#chown -R condor:condor /var/lock/condor-ce
-#chown -R condor:condor /run/lock/condor-ce
+cp $SIMPLE_CONFIG_DIR/config/condor-ce-starter.service /etc/systemd/system/condor-ce-starter.service
 
 echo "----------------------------------"
 echo "Starting daemons"
@@ -66,6 +62,8 @@ echo "Starting HTCondor"
 systemctl start condor
 echo "Starting HTCondorCE"
 systemctl start condor-ce
+echo "Starting HTCondorCE wrapper"
+systemctl start condor-ce-starter
 echo "Starting crond"
 systemctl start crond
 echo "Fetch CRL config"
@@ -76,13 +74,13 @@ echo "----------------------------------"
 echo "Retry starting HTCondorCE "
 echo "----------------------------------"
 sleep 10
-chown condor:condor /var/lock/condor-ce
-chown condor:condor /run/lock/condor-ce
+chown -R condor:condor /var/lock/condor-ce
+chown -R condor:condor /run/lock/condor-ce
 systemctl restart condor-ce
-
-echo "----------------------------------"
+echo "----------------------------------"q
 echo "Prepare for restarts "
 echo "----------------------------------"
+systemctl enable condor-ce-starter
 systemctl enable condor-ce
 systemctl enable condor
 systemctl enable crond

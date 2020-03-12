@@ -1,0 +1,12 @@
+[Unit]
+Description=HTCondor-CE systemd unit wrapper for container
+#After=network.target
+After=condor-ce.service
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+User=root
+ExecStart=/usr/bin/chown -R condor:condor /var/lock/condor-ce
+#ExecStart="/usr/bin/pwd"
+[Install]
+WantedBy=multi-user.target
