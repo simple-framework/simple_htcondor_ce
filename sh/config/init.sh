@@ -77,7 +77,7 @@ sleep 10
 chown -R condor:condor /var/lock/condor-ce
 chown -R condor:condor /run/lock/condor-ce
 systemctl restart condor-ce
-echo "----------------------------------"q
+echo "----------------------------------"
 echo "Prepare for restarts "
 echo "----------------------------------"
 systemctl enable condor-ce-starter

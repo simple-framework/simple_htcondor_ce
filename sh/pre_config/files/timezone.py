@@ -1,4 +1,4 @@
-from config_file import ConfigFile
+from models.config_file import ConfigFile
 
 
 class TimeZone(ConfigFile):
