@@ -1,4 +1,3 @@
-import os
 import argparse
 import yaml
 import os
@@ -11,9 +10,9 @@ from files.pc_config_50 import PCConfig50
 from files.simple_condor_98 import SimpleCondor98
 from files.supported_vo_users import SupportedVOUsers
 from files.supplemental_config import SupplementalConfig
-from files.supported_vos import SupportedVOs
 from files.timezone import TimeZone
 from files.vomsconfig import VOMSConfig
+from files.vomses import VOMSES
 
 from helpers.generic_helpers import get_lightweight_component
 
@@ -93,21 +92,30 @@ if __name__ == "__main__":
             supplemental_config.generate_output_file()
 
     if 'voms_config' in augmented_site_level_config:
-        # supported_vos = SupportedVOs(f"{output_dir}/supported_vos", augmented_site_level_config, execution_id)
-        # supported_vos.generate_output_file()
+        # vomsdir
         try:
             os.mkdir(f"{output_dir}/vomsdir")
         except OSError:
             pass
+
+        # vomses
+        try:
+            os.mkdir(f"{output_dir}/vomses")
+        except OSError:
+            pass
+
+        # subdirs
         vos = set()
         for voms_config in augmented_site_level_config['voms_config']:
             vos.add(voms_config['vo']['name'])
 
         for vo in vos:
+            # vomsdir
             try:
                 os.mkdir(f"{output_dir}/vomsdir/{vo}")
             except OSError:
                 pass
+
         voms_config = augmented_site_level_config['voms_config']
         for voms in voms_config:
             vo_name = voms['vo']['name']
@@ -117,5 +125,12 @@ if __name__ == "__main__":
                                               augmented_site_level_config,
                                               execution_id,
                                               server_data)
-                voms_config_file.generate_output_file()
 
+                vomses = VOMSES(f"{output_dir}/vomses/{vo_name}-{server_data['server']}",
+                                augmented_site_level_config,
+                                execution_id,
+                                server_data,
+                                vo_name)
+
+                voms_config_file.generate_output_file()
+                vomses.generate_output_file()
