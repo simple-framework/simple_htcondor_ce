@@ -9,4 +9,4 @@ class VOMSES(ConfigFile):
 
     def add_advanced_parameters(self):
         self.advanced_category.add(
-            f"{self.vo} {self.server['server']} {self.server['port']} {self.server['dn']} {self.vo} 24\n")
+            f"\"{self.vo}\" \"{self.server['server']}\" \"{self.server['port']}\" \"{self.server['dn']}\" \"{self.vo}\" \"24\"\n")
