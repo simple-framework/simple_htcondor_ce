@@ -1,5 +1,5 @@
-from config_file import ConfigFile
-from generic_helpers import get_dns_info
+from models.config_file import ConfigFile
+from helpers.generic_helpers import get_dns_info
 
 
 class PCConfig50(ConfigFile):
