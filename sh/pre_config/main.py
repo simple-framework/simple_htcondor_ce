@@ -3,6 +3,7 @@ import argparse
 import yaml
 
 from files.configured_attributes_60 import ConfiguredAttributes60
+from files.job_router import JobRouter
 from files.site_security_59 import SiteSecurity59
 from files.simple_98 import Simple98
 from files.condor_mapfile import CondorMapfile
@@ -57,6 +58,11 @@ if __name__ == "__main__":
                                    augmented_site_level_config, execution_id)
     condor_mapfile.generate_output_file()
 
+    job_router_config = JobRouter(f"{output_dir}/70_job_router.conf", augmented_site_level_config,
+                                  execution_id)
+
+    job_router_config.generate_output_file()
+
     # Custom config files /etc/condor
     pc_config_50 = PCConfig50("{output_dir}/50_PC.conf".format(output_dir=output_dir),
                               augmented_site_level_config, execution_id)
@@ -73,6 +79,7 @@ if __name__ == "__main__":
                                           augmented_site_level_config, execution_id)
     supported_vo_users.generate_output_file()
 
+    # supplemental config
     lc = get_lightweight_component(augmented_site_level_config, execution_id)
 
     if os.path.exists('{output_dir}/supplemental_mapfile'.format(output_dir=output_dir)):
