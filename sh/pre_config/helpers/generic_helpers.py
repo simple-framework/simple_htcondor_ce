@@ -28,6 +28,19 @@ def get_fqan_for_vo(vo, augmented_site_level_config, lightweight_component):
     return [fqan for fqan in voms_config if fqan['vo']['name'] == vo]
 
 
+def get_primary_user_for_fqan(fqan, augmented_site_level_config, lightweight_component):
+    voms_config = [x for x in get_voms_config(augmented_site_level_config, lightweight_component)
+                   if x['voms_fqan'] == fqan
+                   ]
+    pool_accounts = list(
+        {x['pool_accounts'][y]['base_name']: x['pool_accounts'][y] for x in voms_config
+         for y in range(0, len(x['pool_accounts']))}.values())
+    if len(pool_accounts) == 1:
+        return pool_accounts[0]['base_name']
+    else:
+        return pool_accounts[len(pool_accounts) - 1]['base_name']
+
+
 def get_users_for_fqan(fqan, augmented_site_level_config, lightweight_component):
     voms_config = [x for x in get_voms_config(augmented_site_level_config, lightweight_component)
                    if x['voms_fqan'] == fqan

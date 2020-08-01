@@ -19,7 +19,7 @@ class CondorMapfile(ConfigFile):
         fqans = [fqan['voms_fqan'] for vo in supported_vos for fqan in
                  get_fqan_for_vo(vo, self.augmented_site_level_config, self.lightweight_component)]
         for fqan in fqans:
-            user = get_users_for_fqan(fqan, self.augmented_site_level_config, self.lightweight_component)[0]
+            user = get_primary_user_for_fqan(fqan, self.augmented_site_level_config, self.lightweight_component)
             final_fqan = fqan.replace("/", "\\/")
             # GSI "<DISTINGUISHED NAME>,<VOMS FQAN 1>,<VOMS FQAN 2>,...,<VOMSFQAN N>" <USERNAME>@users.htcondor.org
             # GSI ".*,\/GLOW\/Role=htpc.*" glow@users.htcondor.org
