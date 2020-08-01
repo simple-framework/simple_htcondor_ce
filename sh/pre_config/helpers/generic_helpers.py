@@ -28,6 +28,10 @@ def get_fqan_for_vo(vo, augmented_site_level_config, lightweight_component):
     return [fqan for fqan in voms_config if fqan['vo']['name'] == vo]
 
 
+def generate_acct_group_for_fqan(vo, fqan):
+    return f"group_{vo}."
+
+
 def get_primary_user_for_fqan(fqan, augmented_site_level_config, lightweight_component):
     voms_config = [x for x in get_voms_config(augmented_site_level_config, lightweight_component)
                    if x['voms_fqan'] == fqan
