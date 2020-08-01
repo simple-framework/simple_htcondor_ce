@@ -7,6 +7,7 @@ cp $SIMPLE_CONFIG_DIR/config/condor_mapfile $HTCONDOR_CE_CONFIG_DIR/condor_mapfi
 cp $SIMPLE_CONFIG_DIR/config/60_configured_attributes.conf $HTCONDOR_CE_CONFIG_DIR/config.d/60_configured_attributes.conf
 cp $SIMPLE_CONFIG_DIR/config/98_simple.conf $HTCONDOR_CE_CONFIG_DIR/config.d/98_simple.conf
 cp $SIMPLE_CONFIG_DIR/config/59_site_security.conf $HTCONDOR_CE_CONFIG_DIR/config.d/59_site_security.conf
+cp $SIMPLE_CONFIG_DIR/config/70_job_router.conf $HTCONDOR_CE_CONFIG_DIR/config.d/70_job_router.conf
 cp -rf $SIMPLE_CONFIG_DIR/config/vomsdir /etc/grid-security/
 cp -rf $SIMPLE_CONFIG_DIR/config/vomses /etc/
 
