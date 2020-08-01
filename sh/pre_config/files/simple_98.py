@@ -7,6 +7,7 @@ class Simple98(ConfigFile):
 
     def add_static_parameters(self):
         self.static_category.add_key_value("ALL_DEBUG", "D_FULLDEBUG")
+        self.static_category.add_key_value("GSI_SKIP_HOST_CHECK", "True")
         self.static_category.add_key_value("SEC_CLIENT_AUTHENTICATION_METHODS", "GSI, FS")
 
     def add_advanced_parameters(self):
