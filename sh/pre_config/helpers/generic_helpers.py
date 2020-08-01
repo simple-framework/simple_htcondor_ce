@@ -58,6 +58,9 @@ def get_primary_user_for_fqan(fqan, augmented_site_level_config, lightweight_com
     if len(pool_accounts) == 1:
         return pool_accounts[0]['base_name']
     else:
+        for pool_account in pool_accounts:
+            if "sgm" in pool_account['base_name']:
+                return pool_account['base_name']
         return pool_accounts[len(pool_accounts) - 1]['base_name']
 
 
