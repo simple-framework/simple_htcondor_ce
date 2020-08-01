@@ -10,8 +10,8 @@ class JobRouter(ConfigFile):
                                   "  TargetUniverse = 5;\n" \
                                   "  name = {name};\n" \
                                   "  requirements = {req};\n" \
-                                  "  set_AcctSubGroup = ifThenElse(NumberCpus > 1 ,\"_mcore\",\"_score\");" \
-                                  "  eval_set_AccountingGroup = strcat({acct_group}, LivAcctSubGroup);\n" \
+                                  "  set_AcctSubGroup = ifThenElse(NumberCpus > 1 ,\"_mcore\",\"_score\");\n" \
+                                  "  eval_set_AccountingGroup = strcat(\"{acct_group}\", LivAcctSubGroup);\n" \
                                   "]\n"
         ConfigFile.__init__(self, output_file, augmented_site_level_config, execution_id)
 
@@ -19,6 +19,7 @@ class JobRouter(ConfigFile):
         super().add_advanced_parameters()
         routes = []
         voms_config = get_voms_config(self.augmented_site_level_config, self.lightweight_component)
+
         for voms_info in voms_config:
             fqan = voms_info['voms_fqan']
             user = get_primary_user_for_fqan(fqan, self.augmented_site_level_config, self.lightweight_component)
@@ -32,6 +33,7 @@ class JobRouter(ConfigFile):
                 req=requirements_classad,
                 acct_group=acct_group
             ))
+
         generated_routes = "".join(routes)
         job_routes = f"{self.job_router_config_begin}\n{generated_routes}\n{self.job_router_config_end}"
-        return job_routes
+        self.advanced_category.add(job_routes)

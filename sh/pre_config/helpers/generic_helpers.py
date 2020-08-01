@@ -29,7 +29,23 @@ def get_fqan_for_vo(vo, augmented_site_level_config, lightweight_component):
 
 
 def generate_acct_group_for_fqan(vo, fqan):
-    return f"group_{vo}."
+    start_str = f"group_{vo}"
+    if fqan.startswith('/'):
+        fqan = fqan[1:]
+    fqan = fqan.lower().split("role=")
+    group_info = fqan[0]
+    group_info = group_info.replace("/", ".")
+    if len(fqan) == 1:
+        return f"{start_str}.{group_info}"
+
+    role_and_cap = fqan[1]
+    role_and_cap = role_and_cap.split("capability=")
+    role = role_and_cap[0]
+    if len(role_and_cap) == 1:
+        return f"{start_str}.{group_info}_{role}"
+
+    cap = role_and_cap[1].replace(",", "_")
+    return f"{start_str}.{group_info}_{role}_{cap}"
 
 
 def get_primary_user_for_fqan(fqan, augmented_site_level_config, lightweight_component):
