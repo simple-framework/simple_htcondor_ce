@@ -17,6 +17,9 @@ class JobRouter(ConfigFile):
 
     def add_advanced_parameters(self):
         super().add_advanced_parameters()
+        site_admin_job_routes = [];
+        if "job_routes" in self.lightweight_component['config']:
+            site_admin_job_routes = "\n".join(self.lightweight_component['config']['job_routes'])
         routes = []
         voms_config = get_voms_config(self.augmented_site_level_config, self.lightweight_component)
 
@@ -35,5 +38,5 @@ class JobRouter(ConfigFile):
             ))
 
         generated_routes = "".join(routes)
-        job_routes = f"{self.job_router_config_begin}\n{generated_routes}\n{self.job_router_config_end}"
+        job_routes = f"{self.job_router_config_begin}\n{site_admin_job_routes}\n{generated_routes}{self.job_router_config_end}"
         self.advanced_category.add(job_routes)

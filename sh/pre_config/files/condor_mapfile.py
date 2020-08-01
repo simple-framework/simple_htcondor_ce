@@ -15,6 +15,9 @@ class CondorMapfile(ConfigFile):
 
     def add_advanced_parameters(self):
         super().add_advanced_parameters()
+        if "condor_mapfile_entries" in self.lightweight_component['config']:
+            self.advanced_category.add("\n".join(self.lightweight_component['config']['condor_mapfile_entries']))
+            self.advanced_category.add("\n")
         supported_vos = get_supported_vos(self.augmented_site_level_config)
         fqans = [fqan['voms_fqan'] for vo in supported_vos for fqan in
                  get_fqan_for_vo(vo, self.augmented_site_level_config, self.lightweight_component)]
