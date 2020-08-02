@@ -15,6 +15,7 @@ class CondorMapfile(ConfigFile):
 
     def add_advanced_parameters(self):
         super().add_advanced_parameters()
+        output = []
         if "condor_mapfile_entries" in self.lightweight_component['config']:
             self.advanced_category.add("\n".join(self.lightweight_component['config']['condor_mapfile_entries']))
             self.advanced_category.add("\n")
@@ -23,7 +24,9 @@ class CondorMapfile(ConfigFile):
                  get_fqan_for_vo(vo, self.augmented_site_level_config, self.lightweight_component)]
         for fqan in fqans:
             user = get_primary_user_for_fqan(fqan, self.augmented_site_level_config, self.lightweight_component)
-            final_fqan = fqan.replace("/", "\\/")
             # GSI "<DISTINGUISHED NAME>,<VOMS FQAN 1>,<VOMS FQAN 2>,...,<VOMSFQAN N>" <USERNAME>@users.htcondor.org
-            # GSI ".*,\/GLOW\/Role=htpc.*" glow@users.htcondor.org
-            self.advanced_category.add(f"GSI \".*,{final_fqan}\\/.*\" {user}\n")
+            # GSI ".*,/GLOW/Role=htpc.*" glow@users.htcondor.org
+            # https://www-auth.cs.wisc.edu/lists/htcondor-users/2020-July/msg00013.shtml
+            output.append(f"GSI \".*,{fqan}/.*\" {user}\n")
+        output = sorted(output, key=lambda x: len(x), reverse=True)
+        self.advanced_category.add("".join(output))
