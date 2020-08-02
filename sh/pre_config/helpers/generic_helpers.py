@@ -34,6 +34,8 @@ def generate_acct_group_for_fqan(vo, fqan):
         fqan = fqan[1:]
     fqan = fqan.lower().split("role=")
     group_info = fqan[0]
+    if group_info.endswith('/'):
+        group_info = group_info[:-1]
     group_info = group_info.replace("/", ".")
     if len(fqan) == 1:
         return f"{start_str}.{group_info}"
