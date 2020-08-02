@@ -26,7 +26,7 @@ class JobRouter(ConfigFile):
         for voms_info in voms_config:
             fqan = voms_info['voms_fqan']
             user = get_primary_user_for_fqan(fqan, self.augmented_site_level_config, self.lightweight_component)
-            name = f"Filtering by mapped job owner {user}"
+            name = f"\"Filtering by mapped job owner {user}\""
             requirements_classad = f"(Owner =?= \"{user}\")"
             vo_name = voms_info['vo']['name']
             acct_group = generate_acct_group_for_fqan(vo_name, fqan)
@@ -38,5 +38,8 @@ class JobRouter(ConfigFile):
             ))
 
         generated_routes = "".join(routes)
-        job_routes = f"{self.job_router_config_begin}\n{site_admin_job_routes}\n{generated_routes}{self.job_router_config_end}"
+        if len(site_admin_job_routes) > 0:
+            job_routes = f"{self.job_router_config_begin}\n{site_admin_job_routes}\n{generated_routes}{self.job_router_config_end}"
+        else:
+            job_routes = f"{self.job_router_config_begin}\n{generated_routes}{self.job_router_config_end}"
         self.advanced_category.add(job_routes)

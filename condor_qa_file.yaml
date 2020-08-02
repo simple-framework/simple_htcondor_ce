@@ -1,0 +1,654 @@
+meta_info_htcondor-worker:
+  component: HTCondor-Worker
+  type: worker_node
+  version: 8.8
+  site_level_config_version: 1.0
+  default_var_prefix: htcondor_worker_default_var
+  host_requirements:
+    cvmfs: true
+    host_certificates: false
+  level_2_configurators:
+    sh:
+      docker_run_parameters:
+        privileged: true
+        tty: true
+        interactive: true
+        detached: true
+      docker_hub_tag: maany/simple_htcondor_worker
+default_group_opssgm:
+  gid: 46001
+  name: opssgm
+default_pool_accounts_alicesgm:
+  base_name: sgmali
+  initial_uid: 60101
+  users_num: 10
+  primary_group:
+    gid: 1397
+    name: alicesgm
+  secondary_groups:
+  - gid: 1395
+    name: alice
+default_pool_accounts_cms:
+  base_name: cms
+  initial_uid: 14417
+  users_num: 5
+  primary_group:
+    gid: 1403
+    name: cms
+  secondary_groups: []
+default_pool_accounts_lhcbsgm:
+  base_name: sgmlhcb
+  initial_uid: 66101
+  users_num: 10
+  primary_group:
+    gid: 1409
+    name: lhcbsgm
+  secondary_groups:
+  - gid: 1407
+    name: lhcb
+default_group_ops_name: ops
+site:
+  name: OpenStack SIMPLE dev cluster
+  email: admin@your-site.domain
+  latitude: 46.3
+  longitude: 6.2
+  location: CERN, Geneva, Switzerland
+  description: CERN HTCondor cluster by SIMPLE @ CERN Openstack
+  website: https://home.cern
+  support_website: https://groups.google.com/forum/#!forum/wlcg-lightweight-sites
+  support_email: admin@your-site.domain
+  security_email: admin@your-site.domain
+  grid: wlcg
+  tier: 3
+  bdii_host: bdii.cern.ch
+  cvmfs_http_proxy_list:
+  - http://ca-proxy.cern.ch:3128
+  use_argus: no
+  timezone: CET
+lightweight_components:
+- lifecycle_hooks:
+    pre_config: []
+    pre_init: []
+    post_init: []
+  name: HTCondor-CE
+  deploy:
+    node: simple-lc-node0.cern.ch
+    container_count: 1
+  config:
+    gss_assist_gridmap_cache_expiration: 7200
+    condor_host_execution_id: 1
+    per_job_history_dir: /var/lib/gratia/condorce_data
+    uid_domain: cern.ch
+  repository_revision: qa
+  supplemental_config:
+    htcondor-ce:
+    - MYVAR=VALUE
+    - ANOTHER_CONDOR_KNOB: VALUE
+    htcondor:
+    - MYVAR=VALUE
+    /etc/hosts:
+    - 10.0.1.100 apel-host.mysite
+  repository_url: https://github.com/simple-framework/simple_htcondor_ce
+  type: compute_element
+  preferred_tech_stack:
+    level_2_configuration: sh
+  container_count: 1
+  id: 0
+  execution_id: 0
+- lifecycle_hooks:
+    pre_config: []
+    pre_init: []
+    post_init: []
+  name: HTCondor-Batch
+  deploy:
+    node: simple-lc-node1.cern.ch
+    container_count: 1
+  config:
+    placeholder_param: some_value
+  repository_revision: master
+  supplemental_config:
+    supplemental_config:
+    htcondor:
+    - MYVAR=VALUE
+    /etc/hosts:
+    - 10.0.1.100 apel-host.mysite
+  repository_url: https://github.com/simple-framework/simple_htcondor_batch
+  type: batch_system
+  preferred_tech_stack:
+    level_2_configuration: sh
+  container_count: 1
+  id: 1
+  execution_id: 1
+- lifecycle_hooks:
+    pre_config: []
+    pre_init: []
+    post_init: []
+  name: HTCondor-Worker
+  deploy:
+    node: simple-lc-node4.cern.ch
+    container_count: 1
+  config:
+    condor_host_execution_id: 1
+    num_slots: 3
+  repository_revision: qa
+  supplemental_config:
+    /some_path_in_container:
+    - contents to be appended
+  repository_url: https://github.com/simple-framework/simple_htcondor_worker
+  type: worker_node
+  preferred_tech_stack:
+    level_2_configuration: sh
+  container_count: 1
+  id: 2
+  execution_id: 2
+default_group_lhcbsgm_name: lhcbsgm
+default_group_atlas_name: atlas
+default_pool_accounts_alice:
+  base_name: alice
+  initial_uid: 10417
+  users_num: 5
+  primary_group:
+    gid: 1395
+    name: alice
+  secondary_groups: []
+default_vo_lhcb:
+  name: lhcb
+  servers:
+  - server: voms2.cern.ch
+    port: '15003'
+    dn: /DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch
+    ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+  - server: lcg-voms2.cern.ch
+    port: '15003'
+    dn: /DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch
+    ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+  default_se: not_used.some-domain
+  sw_dir: .
+  storage_dir: /not/used
+default_group_lhcb:
+  gid: 1407
+  name: lhcb
+meta_info_htcondor-batch:
+  component: HTCondor-Batch
+  type: batch_system
+  version: 8.8
+  site_level_config_version: 1.0
+  default_var_prefix: htcondor_batch_default_var
+  runtime_vars:
+  - htcondor_runtime_var_batch_host
+  host_requirements:
+    firewall:
+    - ports: 9618
+      protocol: tcp
+      action: accept
+      ipv6: true
+    cvmfs: false
+    host_certificates: false
+  level_2_configurators:
+    sh:
+      docker_run_parameters:
+        privileged: true
+        hostname: simple-lc-node1.cern.ch
+        ports:
+        - 9618:9618
+        tty: true
+        interactive: true
+        detached: true
+      docker_hub_tag: maany/simple_htcondor_batch
+default_pool_accounts_dteam:
+  base_name: dteam
+  initial_uid: 18118
+  users_num: 10
+  primary_group:
+    gid: 2688
+    name: dteam
+  secondary_groups: []
+default_group_dteamsgm_name: dteamsgm
+htcondor-batch-expected-from-site-level-config:
+default_vo_dteam:
+  name: dteam
+  servers:
+  - server: voms2.hellasgrid.gr
+    port: '15004'
+    dn: /C=GR/O=HellasGrid/OU=hellasgrid.gr/CN=voms2.hellasgrid.gr
+    ca_dn: /C=GR/O=HellasGrid/OU=Certification Authorities/CN=HellasGrid CA 2016
+  default_se: not_used.some-domain
+  sw_dir: .
+  storage_dir: /storage/dteam
+default_group_ops:
+  gid: 45000
+  name: ops
+default_group_cms:
+  gid: 1403
+  name: cms
+default_group_lhcbsgm:
+  gid: 1409
+  name: lhcbsgm
+default_group_alicesgm_name: alicesgm
+htcondor-ce-expected-from-site-level-config:
+  htcondor_ce_default_var_uid_domain: cern.ch
+  htcondor_ce_default_var_gss_assist_gridmap_cache_expiration: 7200
+  htcondor_ce_default_var_per_job_history_dir: /var/lib/gratia/condorce_data
+htcondor_ce_runtime_variables:
+- simple-lc-node0.cern.ch
+default_group_cmssgm:
+  gid: 1405
+  name: cmssgm
+default_group_dteamsgm:
+  gid: 2680
+  name: dteamsgm
+default_vo_generic_server_primary: voms2.cern.ch
+default_pool_accounts_lhcb:
+  base_name: lhcb
+  initial_uid: 16417
+  users_num: 5
+  primary_group:
+    gid: 1407
+    name: lhcb
+  secondary_groups: []
+htcondor-worker-expected-from-site-level-config:
+  htcondor_worker_default_var_num_slots: 1
+site_infrastructure:
+- fqdn: simple-lc-node0.cern.ch
+  ip_address: 188.185.115.228
+- fqdn: simple-lc-node1.cern.ch
+  ip_address: 188.185.118.59
+- fqdn: simple-lc-node4.cern.ch
+  ip_address: 188.185.79.162
+default_pool_accounts_dteamsgm:
+  base_name: sgmdtm
+  initial_uid: 60501
+  users_num: 5
+  primary_group:
+    gid: 2680
+    name: dteamsgm
+  secondary_groups:
+  - gid: 2688
+    name: dteam
+schema: https://raw.githubusercontent.com/WLCG-Lightweight-Sites/simple_grid_site_repo/master/simple_base_schema.yaml
+default_group_atlassgm:
+  gid: 1401
+  name: atlassgm
+htcondor_batch_runtime_variables:
+- simple-lc-node1.cern.ch
+default_group_alice_name: alice
+default_vo_generic_dn_ca_cern: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+default_group_alicesgm:
+  gid: 1397
+  name: alicesgm
+supported_virtual_organizations:
+- name: alice
+  servers:
+  - server: voms2.cern.ch
+    port: '15000'
+    dn: /DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch
+    ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+  - server: lcg-voms2.cern.ch
+    port: '15000'
+    dn: /DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch
+    ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+  default_se: not_used.some-domain
+  sw_dir: .
+  storage_dir: /not/used
+- name: dteam
+  servers:
+  - server: voms2.hellasgrid.gr
+    port: '15004'
+    dn: /C=GR/O=HellasGrid/OU=hellasgrid.gr/CN=voms2.hellasgrid.gr
+    ca_dn: /C=GR/O=HellasGrid/OU=Certification Authorities/CN=HellasGrid CA 2016
+  default_se: not_used.some-domain
+  sw_dir: .
+  storage_dir: /storage/dteam
+- name: ops
+  servers:
+  - server: voms2.cern.ch
+    port: '15009'
+    dn: /DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch
+    ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+  - server: lcg-voms2.cern.ch
+    port: '15009'
+    dn: /DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch
+    ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+  default_se: not_used.some-domain
+  sw_dir: .
+  storage_dir: /storage/ops
+voms_config:
+- voms_fqan: /alice
+  pool_accounts:
+  - base_name: alice
+    initial_uid: 10417
+    users_num: 5
+    primary_group:
+      gid: 1395
+      name: alice
+    secondary_groups: []
+  vo:
+    name: alice
+    servers:
+    - server: voms2.cern.ch
+      port: '15000'
+      dn: /DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch
+      ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+    - server: lcg-voms2.cern.ch
+      port: '15000'
+      dn: /DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch
+      ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+    default_se: not_used.some-domain
+    sw_dir: .
+    storage_dir: /not/used
+- voms_fqan: /alice/ROLE=lcgadmin
+  pool_accounts:
+  - base_name: alice
+    initial_uid: 10417
+    users_num: 5
+    primary_group:
+      gid: 1395
+      name: alice
+    secondary_groups: []
+  - base_name: sgmali
+    initial_uid: 60101
+    users_num: 10
+    primary_group:
+      gid: 1397
+      name: alicesgm
+    secondary_groups:
+    - gid: 1395
+      name: alice
+  vo:
+    name: alice
+    servers:
+    - server: voms2.cern.ch
+      port: '15000'
+      dn: /DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch
+      ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+    - server: lcg-voms2.cern.ch
+      port: '15000'
+      dn: /DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch
+      ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+    default_se: not_used.some-domain
+    sw_dir: .
+    storage_dir: /not/used
+  comment: sgm
+- voms_fqan: /dteam
+  pool_accounts:
+  - initial_uid: 20020
+    base_name: dteam
+    users_num: 10
+    primary_group:
+      gid: 2688
+      name: dteam
+    secondary_groups: []
+  vo:
+    name: dteam
+    servers:
+    - server: voms2.hellasgrid.gr
+      port: '15004'
+      dn: /C=GR/O=HellasGrid/OU=hellasgrid.gr/CN=voms2.hellasgrid.gr
+      ca_dn: /C=GR/O=HellasGrid/OU=Certification Authorities/CN=HellasGrid CA 2016
+    default_se: not_used.some-domain
+    sw_dir: .
+    storage_dir: /storage/dteam
+- voms_fqan: /dteam/ROLE=lcgadmin
+  pool_accounts:
+  - base_name: sgmdtm
+    initial_uid: 60501
+    users_num: 5
+    primary_group:
+      gid: 2680
+      name: dteamsgm
+    secondary_groups:
+    - gid: 2688
+      name: dteam
+  - base_name: dteam
+    initial_uid: 18118
+    users_num: 10
+    primary_group:
+      gid: 2688
+      name: dteam
+    secondary_groups: []
+  vo:
+    name: dteam
+    servers:
+    - server: voms2.hellasgrid.gr
+      port: '15004'
+      dn: /C=GR/O=HellasGrid/OU=hellasgrid.gr/CN=voms2.hellasgrid.gr
+      ca_dn: /C=GR/O=HellasGrid/OU=Certification Authorities/CN=HellasGrid CA 2016
+    default_se: not_used.some-domain
+    sw_dir: .
+    storage_dir: /storage/dteam
+  comment: sgm
+- voms_fqan: /ops
+  vo:
+    name: ops
+    servers:
+    - server: voms2.cern.ch
+      port: '15009'
+      dn: /DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch
+      ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+    - server: lcg-voms2.cern.ch
+      port: '15009'
+      dn: /DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch
+      ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+    default_se: not_used.some-domain
+    sw_dir: .
+    storage_dir: /storage/ops
+  pool_accounts:
+  - base_name: ops
+    initial_uid: 45001
+    users_num: 10
+    primary_group:
+      gid: 45000
+      name: ops
+    secondary_groups: []
+- voms_fqan: /ops/ROLE=lcgadmin
+  pool_accounts:
+  - base_name: sgmops
+    initial_uid: 60701
+    users_num: 10
+    primary_group:
+      gid: 45000
+      name: ops
+    secondary_groups:
+    - gid: 46001
+      name: opssgm
+  - base_name: ops
+    initial_uid: 45001
+    users_num: 10
+    primary_group:
+      gid: 45000
+      name: ops
+    secondary_groups: []
+  vo:
+    name: ops
+    servers:
+    - server: voms2.cern.ch
+      port: '15009'
+      dn: /DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch
+      ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+    - server: lcg-voms2.cern.ch
+      port: '15009'
+      dn: /DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch
+      ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+    default_se: not_used.some-domain
+    sw_dir: .
+    storage_dir: /storage/ops
+  comment: sgm
+default_vo_alice:
+  name: alice
+  servers:
+  - server: voms2.cern.ch
+    port: '15000'
+    dn: /DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch
+    ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+  - server: lcg-voms2.cern.ch
+    port: '15000'
+    dn: /DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch
+    ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+  default_se: not_used.some-domain
+  sw_dir: .
+  storage_dir: /not/used
+default_vo_cms:
+  name: cms
+  servers:
+  - server: voms2.cern.ch
+    port: '15002'
+    dn: /DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch
+    ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+  - server: lcg-voms2.cern.ch
+    port: '15002'
+    dn: /DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch
+    ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+  default_se: not_used.some-domain
+  sw_dir: .
+  storage_dir: /not/used
+default_vo_ops:
+  name: ops
+  servers:
+  - server: voms2.cern.ch
+    port: '15009'
+    dn: /DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch
+    ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+  - server: lcg-voms2.cern.ch
+    port: '15009'
+    dn: /DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch
+    ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+  default_se: not_used.some-domain
+  sw_dir: .
+  storage_dir: /storage/ops
+default_pool_accounts_atlassgm:
+  base_name: sgmatlas
+  initial_uid: 62101
+  users_num: 10
+  primary_group:
+    gid: 1401
+    name: atlassgm
+  secondary_groups:
+  - gid: 1399
+    name: atlas
+default_group_dteam:
+  gid: 2688
+  name: dteam
+default_group_cmssgm_name: cmssgm
+default_vo_generic_dn_server_secondary: /DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch
+default_pool_accounts_atlas:
+  base_name: atlas
+  initial_uid: 12417
+  users_num: 5
+  primary_group:
+    gid: 1399
+    name: atlas
+  secondary_groups: []
+default_pool_account_ops:
+  base_name: ops
+  initial_uid: 45001
+  users_num: 10
+  primary_group:
+    gid: 45000
+    name: ops
+  secondary_groups: []
+meta_info_htcondor-ce:
+  component: HTCondor-CE
+  type: compute_element
+  version: 8.8
+  site_level_config_version: 1.0
+  default_var_prefix: htcondor_ce_default_var
+  runtime_vars:
+  - htcondor_ce_runtime_var_ce_host
+  host_requirements:
+    firewall:
+    - ports: 9619
+      protocol: tcp
+      action: accept
+      ipv6: true
+    cvmfs: false
+    host_certificates: true
+  level_2_configurators:
+    sh:
+      docker_run_parameters:
+        privileged: true
+        hostname: simple-lc-node0.cern.ch
+        ports:
+        - 9619:9619
+        tty: true
+        interactive: true
+        detached: true
+      docker_hub_tag: maany/simple_htcondor_ce
+default_pool_account_opssgm:
+  base_name: sgmops
+  initial_uid: 60701
+  users_num: 10
+  primary_group:
+    gid: 45000
+    name: ops
+  secondary_groups:
+  - gid: 46001
+    name: opssgm
+default_group_alice:
+  gid: 1395
+  name: alice
+default_group_atlassgm_name: atlassgm
+default_vo_generic_server_secondary: lcg-voms2.cern.ch
+default_group_cms_name: cms
+default_group_opssgm_name: opssgm
+default_group_lhcb_name: lhcb
+default_vo_generic_dn_server_primary: /DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch
+default_group_atlas:
+  gid: 1399
+  name: atlas
+preferred_tech_stack:
+  level_1_configuration: puppet
+  level_2_configuration: sh
+  container_orchestration: docker-swarm
+  container: docker
+default_vo_atlas:
+  name: atlas
+  servers:
+  - server: voms2.cern.ch
+    port: '15001'
+    dn: /DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch
+    ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+  - server: lcg-voms2.cern.ch
+    port: '15001'
+    dn: /DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch
+    ca_dn: /DC=ch/DC=cern/CN=CERN Grid Certification Authority
+  default_se: not_used.some-domain
+  sw_dir: .
+  storage_dir: /not/used
+default_pool_accounts_cmssgm:
+  base_name: sgmcms
+  initial_uid: 64101
+  users_num: 10
+  primary_group:
+    gid: 1405
+    name: cmssgm
+  secondary_groups:
+  - gid: 1403
+    name: cms
+global_variables:
+- 188.185.115.228
+- simple-lc-node0.cern.ch
+- 188.185.118.59
+- simple-lc-node1.cern.ch
+- 188.185.79.162
+- simple-lc-node4.cern.ch
+default_group_dteam_name: dteam
+
+dns:
+- container_fqdn: simple-lc-node0.cern.ch
+  host_fqdn: simple-lc-node0.cern.ch
+  host_ip: 188.185.115.228
+  container_ip: 10.10.0.10
+  type: compute_element
+  execution_id: 0
+- container_fqdn: simple-lc-node1.cern.ch
+  host_fqdn: simple-lc-node1.cern.ch
+  host_ip: 188.185.118.59
+  container_ip: 10.10.0.11
+  type: batch_system
+  execution_id: 1
+- container_fqdn: HTCondor-Worker_simple-lc-node4_2.cern.ch
+  host_fqdn: simple-lc-node4.cern.ch
+  host_ip: 188.185.79.162
+  container_ip: 10.10.0.12
+  type: worker_node
+  execution_id: 2
