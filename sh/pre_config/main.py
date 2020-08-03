@@ -35,7 +35,6 @@ if __name__ == "__main__":
     execution_id = args['execution_id']
     augmented_site_level_config_file = args['augmented_site_level_config_file']
     output_dir = args['output_dir']
-
     augmented_site_level_config = yaml.safe_load(open(augmented_site_level_config_file, 'r'))
 
     # Files present in container by default at /etc/condor-ce/config.d/: 01-ce-auth.conf  01-ce-router.conf

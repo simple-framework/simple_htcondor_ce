@@ -130,9 +130,11 @@ def get_voms_config(augmented_site_level_config, lightweight_component):
             if default_pool_account__sgm_key in augmented_site_level_config:
                 default_pool_accounts.append(augmented_site_level_config[default_pool_account__sgm_key])
                 default_voms_config.append({
-                    'voms_fqan': '/{vo_name}/ROLE=lcgadmin',
+                    'voms_fqan': '/{vo_name}/Role=lcgadmin',
                     'vo': vo,
                     'pool_accounts': default_pool_accounts
                 })
         voms_config = default_voms_config
+    for config in voms_config:
+        config['voms_fqan'] = config['voms_fqan'].replace("ROLE", 'Role')
     return voms_config

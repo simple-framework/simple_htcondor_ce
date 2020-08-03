@@ -10,8 +10,7 @@ class JobRouter(ConfigFile):
                                   "  TargetUniverse = 5;\n" \
                                   "  name = {name};\n" \
                                   "  requirements = {req};\n" \
-                                  "  set_AcctSubGroup = ifThenElse(NumberCpus > 1 ,\"_mcore\",\"_score\");\n" \
-                                  "  eval_set_AccountingGroup = strcat(\"{acct_group}\", LivAcctSubGroup);\n" \
+                                  "  set_AccountingGroup = {acct_group};\n" \
                                   "]\n"
         ConfigFile.__init__(self, output_file, augmented_site_level_config, execution_id)
 
@@ -37,7 +36,13 @@ class JobRouter(ConfigFile):
                 acct_group=acct_group
             ))
 
+        simple_route = self.job_route_template.format(
+            name="Filtering by mapped job owner simple",
+            req="(Owner =?= \"simple\")",
+            acct_group="group_simple"
+        )
         generated_routes = "".join(routes)
+
         if len(site_admin_job_routes) > 0:
             job_routes = f"{self.job_router_config_begin}\n{site_admin_job_routes}\n{generated_routes}{self.job_router_config_end}"
         else:
