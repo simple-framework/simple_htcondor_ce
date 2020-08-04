@@ -21,9 +21,9 @@ class SupplementalConfig(ConfigFile):
 
     def add_advanced_parameters(self):
         super().add_advanced_parameters()
-
-        for prop in self.component_props:
-            if type(prop) == dict:
-                self.advanced_category.add_key_value(*list(prop.items())[0])
-            else:
-                self.advanced_category.add(prop + '\n')
+        if self.component_props is not None:
+            for prop in self.component_props:
+                if type(prop) == dict:
+                    self.advanced_category.add_key_value(*list(prop.items())[0])
+                else:
+                    self.advanced_category.add(prop + '\n')
